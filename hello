@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root">
+
+    </div>
+    <script src="hello.js"></script>
+</body>
+</html>
+..................................................................................
+let h1Element=document.createElement("h1");
+h1Element.textContent="hello world";
+let div=document.getElementById("root");
+div.appendChild(h1Element);
+console.log(div)
