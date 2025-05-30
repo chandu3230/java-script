@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>value</title>
+</head>
+<body>
+    <div id="root">
+        <input id="input" search="\input">
+        <button id="button">click me</button>
+    </div>
+    <script src="value.js"></script>
+</body>
+</html>
+...............................................................................
+let inputElement=document.getElementById('input');
+let btn=document.getElementById('button');
+
+ btn.onclick=function() {
+
+   console.log(inputElement.value);
+ }
