@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link rel="stylesheet" href="web.css">
+</head>
+<body>
+    <div class="main-container"> 
+        <div class="wiki-search-header text-center">
+            <img class="wiki-logo" src="https://static2.bigstockphoto.com/0/0/2/large1500/200621437.jpg">
+            <br />
+            <input placeholder="Type a keyword and press Enter to search" type="search"
+             class="search-input w-100" id="searchInput" >
+        </div>
+        <div class="d-none" id="spinner">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <div class="search-results" id="searchResults">
+
+        </div>
+    </div>
+    <script src="web.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+</body>
+</html>
+.....................................................................................................
+.main-container {
+  font-family: "Roboto", sans-serif;
+}
+.wiki-search-header {
+  border: 1px solid #d5cdcd;
+  padding: 30px 20px;
+  margin-bottom: 40px;
+}
+.wiki-logo {
+  width: 150px;
+  margin-bottom: 30px;
+}
+.search-input {
+  font-size: 18px;
+  border: 1px solid #d5cdcd;
+  border-radius: 3px;
+  padding: 10px;
+}
+.search-results {
+  width: 100%;
+  padding-left: 20px;
+}
+.result-item {
+  margin-bottom: 20px;
+}
+.result-title {
+  font-size: 22px;
+}
+.link-description {
+  color: #444444;
+  font-size: 15px;
+}
+.result-url {
+  color: #006621;
+  text-decoration: none;
+}
+..............................................................................................................
+const searchInputEl = document.getElementById("searchInput");
+const searchResultsEl = document.getElementById("searchResults");
+const spinnerEl = document.getElementById("spinner");
+function createAndAppendSearchResult(result) {
+    const { link, title, description } = result;
+    const resultItemEl = document.createElement("div");
+    resultItemEl.classList.add("result-item");
+    const titleEl = document.createElement("h1");
+    titleEl.textContent = title;
+    titleEl.classList.add("result-title");
+    const linkEl = document.createElement("a");
+    linkEl.href = link;
+    linkEl.target = "_blank";
+    linkEl.textContent = link;
+    linkEl.classList.add("result-url");
+    const descriptionEl = document.createElement("p");
+    descriptionEl.textContent = description;
+    descriptionEl.classList.add("link-description");
+    resultItemEl.appendChild(titleEl);
+    resultItemEl.appendChild(document.createElement("br"));
+    resultItemEl.appendChild(linkEl);
+    resultItemEl.appendChild(document.createElement("br"));
+    resultItemEl.appendChild(descriptionEl);
+    searchResultsEl.appendChild(resultItemEl);
+}
+function displayResults(searchResults) {
+    spinnerEl.classList.add("d-none");
+    searchResults.forEach(createAndAppendSearchResult);
+}
+function searchWikipedia(event) {
+    if (event.key === "Enter") {
+        spinnerEl.classList.remove("d-none");
+        searchResultsEl.textContent = "";
+        const searchInput = searchInputEl.value;
+        const url = "https://apis.ccbp.in/wiki-search?search=" + searchInput;
+        fetch(url)
+            .then(response => response.json())
+            .then(jsonData => {
+                const { search_results } = jsonData;
+                displayResults(search_results);
+            });
+    }
+}
+searchInputEl.addEventListener("keydown", searchWikipedia);
